@@ -9,7 +9,7 @@ import (
 	"io"
 	"math/big"
 
-	internalrsa "github.com/prep/gpg/agent/internal/rsa"
+	internalrsa "github.com/Freeaqingme/go-gpg-agent-client/agent/internal/rsa"
 )
 
 // KeyType describes the type of the key.
