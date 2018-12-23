@@ -35,10 +35,10 @@ func TestDecryptWithPKCS1v15(t *testing.T) {
 		t.Fatalf("Key(%s): %s", keygrip, err)
 	}
 
-	pub := key.Public().(rsa.PublicKey)
+	pub := key.Public().(*rsa.PublicKey)
 	message := []byte("Hello World PKCS1v15")
 
-	ciphertext, err := rsa.EncryptPKCS1v15(rand.Reader, &pub, message)
+	ciphertext, err := rsa.EncryptPKCS1v15(rand.Reader, pub, message)
 	if err != nil {
 		t.Fatalf("EncryptPKCS1v15(): %s", err)
 	}
@@ -60,11 +60,11 @@ func TestDecryptWithOAEP(t *testing.T) {
 		t.Fatalf("Key(%s): %s", keygrip, err)
 	}
 
-	pub := key.Public().(rsa.PublicKey)
+	pub := key.Public().(*rsa.PublicKey)
 	message := []byte("Hello World OAEP")
 	label := []byte("label")
 
-	ciphertext, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, &pub, message, label)
+	ciphertext, err := rsa.EncryptOAEP(sha256.New(), rand.Reader, pub, message, label)
 	if err != nil {
 		t.Fatalf("EncryptOAEP(): %s", err)
 	}
@@ -100,8 +100,8 @@ func TestSignWithPKCS1v15(t *testing.T) {
 		t.Fatalf("Sign(%s): %s", keygrip, err)
 	}
 
-	rsaPub := key.publicKey.(rsa.PublicKey)
-	if err := rsa.VerifyPKCS1v15(&rsaPub, crypto.SHA256, hashed[:], sig); err != nil {
+	rsaPub := key.publicKey.(*rsa.PublicKey)
+	if err := rsa.VerifyPKCS1v15(rsaPub, crypto.SHA256, hashed[:], sig); err != nil {
 		t.Fatalf("VerifyPKCS1v15(): %s", err)
 	}
 }
@@ -127,8 +127,8 @@ func TestSignWithPSS(t *testing.T) {
 		t.Fatalf("Sign(%s): %s", keygrip, err)
 	}
 
-	rsaPub := key.publicKey.(rsa.PublicKey)
-	if err := rsa.VerifyPSS(&rsaPub, crypto.SHA256, hashed[:], sig, opts); err != nil {
+	rsaPub := key.publicKey.(*rsa.PublicKey)
+	if err := rsa.VerifyPSS(rsaPub, crypto.SHA256, hashed[:], sig, opts); err != nil {
 		t.Fatalf("VerifyPSS(): %s", err)
 	}
 }
